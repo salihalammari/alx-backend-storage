@@ -25,7 +25,7 @@ def data_cacher(method: Callable) -> Callable:
             return result.decode('utf-8')
         try:
             result = method(url)
-            redis_store.set(f'count:{url}', 0)
+            '''redis_store.set(f'count:{url}', 0)'''
             redis_store.setex(f'result:{url}', 10, result)
             return result
         except requests.RequestException as e:
