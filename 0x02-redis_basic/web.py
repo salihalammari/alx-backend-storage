@@ -18,12 +18,13 @@ def track_get_page(fn: Callable) -> Callable:
             - tracks how many times get_page is called
         """
         client = redis.Redis()
-        client.incr(f'count:{url}')
-        cached_page = client.get(f'{url}')
+        count_key = f'count:{url}'
+        new_count = client.incr(count_key)
+        cached_page = client.get(url)
         if cached_page:
             return cached_page.decode('utf-8')
         response = fn(url)
-        client.set(f'{url}', response, 10)
+        client.setex(url, 10, response)
         return response
     return wrapper
 
