@@ -5,6 +5,8 @@ import redis
 import requests
 r = redis.Redis()
 
+count = 0
+
 
 def get_page(url: str) -> str:
     """ track how many times a particular URL was accessed in the key
@@ -16,7 +18,7 @@ def get_page(url: str) -> str:
     resp = requests.get(url)
     page_content = resp.text
     r.setex(f"cached:{url}", 10, page_content)
-    r.incr(f"count:{url}")
+    count =  r.incr(f"count:{url}")
 
     return page_content
 
