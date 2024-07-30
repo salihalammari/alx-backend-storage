@@ -18,7 +18,7 @@ def get_page(url: str) -> str:
     resp = requests.get(url)
     page_content = resp.text
     r.setex(f"cached:{url}", 10, page_content)
-    count =  r.incr(f"count:{url}")
+    r.incr(f"count:{url}")
 
     return page_content
 
